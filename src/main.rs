@@ -1,5 +1,8 @@
 #[macro_use]
 extern crate clap;
+use serde::{Deserialize, Serialize};
+use std::fs;
+use std::path::Path;
 // use clap::App;
 /*
 Syncle - 同步工具
@@ -21,12 +24,39 @@ Syncle - 同步工具
 syncle remove
 syncle
 */
+// 常量
+const CONFIG_NAME: &str = "config.yaml";
+const DATABASE_NAME: &str = "database.json";
+const SYNCDB_NAME: &str = "SyncDB.json";
+
+// 配置文件结构
+#[derive(Debug, Serialize, Deserialize)]
+struct Config {}
+
+// 主数据库结构（记录组信息）
+#[derive(Debug, Serialize, Deserialize)]
+struct Database {}
+
+// 文件数据库结构
+#[derive(Debug, Serialize, Deserialize)]
+struct SyncDB {}
+
+struct Group {
+    path: Path,
+}
+
 fn main() {
-    // App::new("Syncle")
-    //     .version("v0.1.0-190820")
-    //     .author("Miswanting <453542772@qq.com>")
-    //     .about("A Sync Manager.")
-    //     .get_matches();
+    let mut cf = Config {};
+    let mut db = Database {};
+    let cf_path = Path::new(CONFIG_NAME);
+    let db_path = Path::new(DATABASE_NAME);
+    if cf_path.exists() {
+        // 读取配置
+    } else {
+        // 生成配置
+        let file_content = serde_yaml::to_string(&cf).unwrap();
+        fs::write(CONFIG_NAME, file_content).unwrap();
+    }
     let matches = clap_app!(Syncle =>
         (version: "v0.1.0-190820")
         (author: "Miswanting <453542772@qq.com>")
