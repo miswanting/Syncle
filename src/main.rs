@@ -53,5 +53,12 @@ fn main() {
         )
     )
     .get_matches();
-    
+
+    match matches.subcommand() {
+        ("add", Some(sub_m)) => println!("{:?}", sub_m),
+        ("remove", Some(sub_m)) => {}
+        ("scan", Some(sub_m)) => {}
+        ("sync", Some(sub_m)) => {}
+        _ => {}
+    }
 }
