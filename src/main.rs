@@ -35,6 +35,7 @@ fn main() {
             (about: "add folder to default group")
             (version: "v0.1.0-190820")
             (author: "Miswanting <453542772@qq.com>")
+            (@arg TARGET: +required "target folder")
         )
         (@subcommand remove =>
             (about: "remove folder from default group")
