@@ -43,7 +43,9 @@ struct Database {
 
 // 文件数据库结构
 #[derive(Debug, Serialize, Deserialize)]
-struct SyncDB {}
+struct SyncDB {
+    mode: String,
+}
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Group {
@@ -53,7 +55,6 @@ struct Group {
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Folder {
-    name: String,
     path: String,
 }
 
@@ -148,8 +149,27 @@ fn main() {
                 let mut buffer = String::new();
                 io::stdin().read_line(&mut buffer).unwrap();
                 buffer = buffer.to_string();
-                let cmd:Vec<&str>=buffer.split_whitespace().collect();
-                println!("{:?}", cmd);
+                let cmd: Vec<&str> = buffer.split_whitespace().collect();
+                if cmd[0] == "add" {
+                    let target_path = Path::new(cmd[1]);
+                    db.groups[0].folders.push(Folder {
+                        path: target_path.to_string_lossy().to_string(),
+                    });
+                    let target_db = target_path.join(SYNCDB_NAME);
+                    let file_db = SyncDB {
+                        mode: "agent".to_string(),
+                    };
+                    let file_content = serde_json::to_string(&file_db).unwrap();
+                    fs::write(target_db, file_content).unwrap();
+                    println!("[FINE]已新建数据库！");
+                } else if cmd[0] == "remove" {
+                    for i in &db.groups[0].folders {
+                        println!("1: {}", i.path);
+                    }
+                    println!("{:?}", db.groups[0]);
+                } else if cmd[0] == "scan" {
+                    println!("{:?}", db.groups[0]);
+                }
             }
         }
     }
