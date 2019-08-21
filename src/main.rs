@@ -163,10 +163,17 @@ fn main() {
                     fs::write(target_db, file_content).unwrap();
                     println!("[FINE]已新建数据库！");
                 } else if cmd[0] == "remove" {
-                    for i in &db.groups[0].folders {
-                        println!("1: {}", i.path);
+                    for i in 0..db.groups[0].folders.len() {
+                        println!("{}: {:?}", i, db.groups[0].folders[i].path);
                     }
-                    println!("{:?}", db.groups[0]);
+                    print!("> ");
+                    io::stdout().flush().unwrap();
+                    let mut buffer = String::new();
+                    io::stdin().read_line(&mut buffer).unwrap();
+                    let choice_raw: Vec<&str> = buffer.split_whitespace().collect();
+                    let choice: usize = choice_raw[0].parse().unwrap();
+                    db.groups[0].folders.remove(choice);
+                    println!("[FINE]已移除！");
                 } else if cmd[0] == "scan" {
                     println!("{:?}", db.groups[0]);
                 }
