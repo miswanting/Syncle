@@ -2,7 +2,7 @@
 extern crate clap;
 use serde::{Deserialize, Serialize};
 use std::fs;
-use std::io::{self, Read, Write};
+use std::io::{self, Write};
 use std::path::Path;
 // use std::collections::HashMap;
 // use clap::App;
@@ -137,9 +137,9 @@ fn main() {
             }
             println!("{:?}", target_db);
         }
-        ("remove", Some(sub_m)) => {}
-        ("scan", Some(sub_m)) => {}
-        ("sync", Some(sub_m)) => {}
+        ("remove", Some(_target)) => {}
+        ("scan", Some(_target)) => {}
+        ("sync", Some(_target)) => {}
         _ => {
             println!("Syncle");
             println!();
